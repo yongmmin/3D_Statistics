@@ -1,0 +1,25 @@
+{
+  "status" : 200,
+  "data" : {
+    "url" : "http://apm.seoul.go.kr/",
+    "serverGroupId" : "SG001",
+    "serverGroupName" : "서울",
+    "serverId" : "S0001",
+    "serverName" : "서울시청",
+    "groupId" : "G0001",
+    "groupName" : "온나라",
+    "instances" : {
+      "homepage11" : [ 2, 2, 2 ],
+      "homepage12" : [ 3, 3, 3 ],
+      "homepage13" : [ 3, 2, 0 ],
+      "homepage14" : [ 1, 1, 3 ],
+      "homepage15" : [ 1, 1, 3 ],
+      "homepage21" : [ 0, 3, 1 ],
+      "homepage22" : [ 0, 4, 2 ],
+      "homepage23" : [ 2, 1, 0 ],
+      "homepage24" : [ 2, 1, 0 ],
+      "homepage25" : [ 1, 0, 0 ]
+    }
+  },
+  "created" : 1697694163876
+}

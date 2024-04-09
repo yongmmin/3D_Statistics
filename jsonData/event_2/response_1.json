@@ -1,0 +1,20 @@
+{
+  "status": 200,
+  "created": 1694526185379,
+  "data": [
+    {
+      "serverId": "S0001",
+      "serverName": "서울시청",
+      "groupId": "G0001",
+      "groupName": "온나라",
+      "url": "http://apm.seoul.or.kr/어쩌구저쩌구",
+      "level": "WARN",
+      "hostname": "onnara",
+      "ipAddress": "192.168.80.103",
+      "agentType": "WAS",
+      "instanceId": "onnara11",
+      "message": "'JVM Heap Usage'의 현재값 '89.02'이 평소와는 다른 극단치에 해당하는 값입니다. (표준오차: 42.3)",
+      "created": 1694526185379
+    }
+  ]
+}

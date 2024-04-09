@@ -1,0 +1,6 @@
+# 기본 정보
+1. 이벤트 목록 출력
+
+# 데이터
+- response_1.json
+- response_2.json

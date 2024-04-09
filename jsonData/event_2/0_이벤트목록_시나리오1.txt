@@ -1,0 +1,9 @@
+# 기본 정보
+1. 이벤트 하나씩 상위에 추가
+2. MAX ROW 값이 2일때 2줄만 유지
+   오래된 ROW (response_1.json) 제거
+
+# 데이터
+- response_1.json
+- response_2.json
+- response_3.json

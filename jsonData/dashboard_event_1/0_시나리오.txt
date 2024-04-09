@@ -1,0 +1,14 @@
+# 기본 정보
+1. 서버 그룹 = 전국 1개
+2. 수집 서버 = 100개
+3. 수집 서버 그룹 = 20개
+
+# 데이터
+- response_1.json
+- response_2.json
+- response_3.json
+    1. "성동구청 온나라" 장애
+- response_4.json
+- response_5.json
+    1. "성동구청 온나라" 장애
+    2. "청도군청 API 서버" 장애

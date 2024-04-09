@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babylon.js Circle Boxes</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+
+    <script src="cdn/babylon.max.js"></script>
+    <script src="cdn/gui.min.js"></script>     
+    <script src="cdn/earcut.min.js"></script>
+    
+</head>
+
+<style>
+  .event-list-wrapper {
+    position: absolute;
+    right: 0rem;
+    bottom: 0rem;
+    display: grid;
+    /* transform: translateY(90%);
+    transition: all 200ms ease-in-out; */
+    /* min-width: 50vw;
+    max-width: 50vw; */
+    width: 80%;
+    /* max-height: 30vh; */
+    height: auto;
+    pointer-events : none;
+  }
+
+  .list-button-wrapper {
+    z-index: 99;
+    pointer-events : auto;
+  }
+
+  .event-list {
+    display: grid;
+    width: auto;
+    /* height: auto; */
+    /* transform: translateY(90%); */
+    transform: translateY(600px);
+    transition: all 200ms ease-in-out;
+
+    max-height: 400px;
+    color: white;
+    border-top-left-radius: 25px;
+    padding: 2rem;
+    border: 3px solid rgb(68, 110, 154);
+    background-color: rgb(30, 52, 70, 0.8);
+  }
+
+  .event-block-1 {
+    margin-bottom: 1rem;
+  }
+
+  .searchCloseButton {
+    position: absolute;
+    top: 7.5rem;
+    right: 1.5rem;
+    display: none;
+  }
+
+  .searchCloseButton2 {
+    background: linear-gradient(90deg, rgba(42, 71, 103,1) 0%, rgba(68,111,158,1) 100%);
+    border: none;
+    padding: 20px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .stopRotateButton {
+    position: absolute;
+    top: 3rem;
+    right: 1.5rem;
+    display: block;
+  }
+
+  .stopRotateButton2 {
+    background: linear-gradient(90deg, rgba(42, 71, 103,1) 0%, rgba(68,111,158,1) 100%);
+    border: none;
+    padding: 20px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+
+  /* .lightTriggerButton {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+  }
+
+  .lightTriggerButton2 {
+    background: linear-gradient(90deg, rgba(42, 71, 103,1) 0%, rgba(68,111,158,1) 100%);
+    border: none;
+    padding: 20px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  } */
+
+  .event-block-2 {
+    width: 100%;
+    /* border: 1px solid #444444;  */
+    border-top: 2px solid rgb(66, 107, 153);
+    border-bottom: 2px solid rgb(66, 107, 153);
+    border-collapse: collapse;
+  }
+  th {
+    border-bottom: 2px solid rgb(66, 107, 153);
+    padding: 10px;
+    color: darkgray;
+    font-weight: 900;
+    position: sticky;
+    top: -0.1rem;
+    background: rgb(30, 52, 70, 1);
+  }
+  tr {
+    padding: 10px;
+    border-bottom: 0.7px solid grey;
+  }
+  td {
+    /* border: 1px solid #444444; */
+    padding: 10px;
+  }
+  .event-list-header {
+    margin-bottom: 1rem;
+  }
+
+  .refresh-button {
+    margin-right: 1rem;
+  }
+
+  .stop-button {
+    margin-right: 1rem;
+  }
+
+  .critical-button {
+    margin-right: 1rem;
+  }
+
+  .export-excel-button {
+    margin-right: 1rem;
+  }
+
+  .search-event {
+    margin-right: 1rem;
+  }
+  .table-wrapper {
+    overflow-y: auto;
+  }
+
+  .table-wrapper::-webkit-scrollbar {
+    width: 5px;
+  }
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background: rgb(68, 110, 154);
+    border: 2px solid rgb(68, 110, 154);
+    border-radius: 12px 12px 12px 12px;
+  }
+  .table-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+</style>
+
+<body>
+
+    <canvas id="renderCanvas"></canvas>  
+    <div id="barLabel" style="position: absolute; top: 0; left: 0; width: auto; height: auto; border-radius: 30px; background-color: black; opacity: 0.5; color: white; transform: translate(-50%,-150%); padding: 0.5rem 1rem 0.5rem 1rem; display: none;"></div>
+    <table id ="serverfull">
+        <tr>
+            <th >서버</th>
+            <th>애플리케이션 그룹</th>
+            <th>인스턴스</th>
+        </tr>
+        <tr id="row2">
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+        </tr>
+        <tr id="row3" style="text-align: center;">
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+            <td style="text-align: center;"></td>
+        </tr>
+    </table>
+
+    <div class="event-list-wrapper" id="event-list-wrapper">
+      <div class="list-button-wrapper" id="listBtnWrapper">
+        <button onclick="upDownTrigger()" class="up-down-button" id="up-down-button">보기</button>
+      </div>
+      <div class="event-list" id ="eventList">
+        <div class="event-block-1">
+          <div class="event-list-header">
+            이벤트 목록
+          </div>
+  
+          <div style="display: flex;">
+            <div class="refresh-button" onclick="fetchEventData(insertData)">
+              <img src="./img/refresh.png" alt="..">
+            </div>
+            <div class="search-event">
+              <input class="searchInput" type="text" id="search-event" placeholder="">
+            
+              <button class="searchBtn" id="search-event-button" onclick="searchEventList()">검색</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table id="event-block-2" class="event-block-2" >
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Created</th>
+                  <th>Level</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Link</th>
+                  <th>UUID</th>
+                  <th>Host IP</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              
+            </tbody>
+          </table>
+        </div>
+        
+      </div>
+    </div>
+
+    <div id="search">
+      <input type="text" id="searchInput" placeholder="  지역명을 입력하세요!">
+      <button id="searchButton" class="searchBtn">검색</button>
+    </div>
+
+    <div id="searchCloseButton" class="searchCloseButton">
+      <button class="searchCloseButton2" >닫기</button>
+    </div>
+
+    <div id="stopRotateButton" class="stopRotateButton">
+      <button id="stopRotateButton2" class="stopRotateButton2" >카메라 회전 중지</button>
+    </div>
+
+    <!-- <div id="lightTriggerButton" class="lightTriggerButton">
+      <button class="lightTriggerButton2" id="lightTriggerButton2">star</button>
+    </div> -->
+
+    <script src="viewer.js"></script>
+
+    <script>
+
+    // eventList DropDown
+    let eventDataSetIndex = 1;
+    
+    // eventList 데이터 패치
+    const fetchEventData = async (callBack) => {
+      fetch(`./jsonData/event_1/response_${eventDataSetIndex}.json`)
+        .then(function(response) {
+        return response.json();
+        }).then(async function(myJson) {
+          const currentData = myJson.data;
+          callBack(currentData);
+          eventDataSetIndex += 1;
+      });
+    };
+    
+    // eventList 데이터 주입
+    const insertData = (data) => {
+      const tbody = document.getElementById('table-body');
+      // const table = document.getElementById('event-block-2');
+      for (let i=0; i<data.length; i++) {
+        const newRow = tbody.insertRow(tbody.rows.length);
+
+        const newCell1 = newRow.insertCell(0);
+        const newCell2 = newRow.insertCell(1);
+        const newCell3 = newRow.insertCell(2);
+        const newCell4 = newRow.insertCell(3);
+        const newCell5 = newRow.insertCell(4);
+        const newCell6 = newRow.insertCell(5);
+        const newCell7 = newRow.insertCell(6);
+        const newCell8 = newRow.insertCell(7);
+        const newCell9 = newRow.insertCell(8);
+
+        newCell1.innerText = "-";
+        newCell2.innerText = data[i].created;
+        newCell3.innerText = data[i].level;
+        newCell4.innerText = data[i].serverName + '/' + data[i].groupName;
+        newCell5.innerText = data[i].agentType;
+        newCell6.innerText = data[i].message;
+        newCell7.innerText = data[i].url;
+        newCell8.innerText = data[i].groupId;
+        newCell9.innerText = data[i].ipAddress;
+      }
+    };
+    
+    const upDownTrigger = () => {
+      const btn = document.getElementById("listBtnWrapper");
+
+      const wrapper = document.getElementById('eventList');
+      const eventListWrapper = document.getElementById('event-list-wrapper');
+      
+      const wrapperStyle = window.getComputedStyle(wrapper);
+      const matrix = new WebKitCSSMatrix(wrapperStyle.transform);
+      if (matrix.m42) {
+        eventListWrapper.style.pointerEvents = 'auto';
+        
+        wrapper.style.transform = 'translateY(0%)';
+
+        btn.style.position = "relative";
+
+        document.getElementById("up-down-button").innerText = "닫기";
+      } else {
+        eventListWrapper.style.pointerEvents = 'none';
+        wrapper.style.transform = "translateY(600px)";
+
+        btn.style.position = "absolute";
+
+        document.getElementById("up-down-button").innerText = "보기";
+      }
+    }
+    
+    const searchEventList = () => {
+      const searchTable = document.getElementById('search-event');
+      const searchTableBody = document.getElementById('table-body');
+      const searchValue = searchTable.value.toLowerCase();
+      const rows = searchTableBody.querySelectorAll('tr');
+      for (var i = 0; i < rows.length; i++) {
+        const rowText = rows[i].textContent.toLowerCase();
+        if (rowText.includes(searchValue)) {
+          rows[i].style.display = '';
+        } else {
+          rows[i].style.display = 'none';
+        }
+      }
+    }
+    
+    fetchEventData(insertData);
+    //eventList DropDown
+    </script>
+  </body>
+
+</html>

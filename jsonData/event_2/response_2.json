@@ -1,0 +1,20 @@
+{
+  "status": 200,
+  "created": 1694526185479,
+  "data": [
+    {
+      "serverId": "S0002",
+      "serverName": "용산군청",
+      "groupId": "G0003",
+      "groupName": "홈페이지",
+      "url": "http://apm.seoul.or.kr/어쩌구저쩌구",
+      "level": "WARN",
+      "hostname": "onnara",
+      "ipAddress": "10.100.23.99",
+      "agentType": "WAS",
+      "instanceId": "homepage25",
+      "message": "'JVM Heap Usage'의 현재값 '99.02'이 평소와는 다른 극단치에 해당하는 값입니다. (표준오차: 42.3)",
+      "created": 1694526185479
+    }
+  ]
+}
